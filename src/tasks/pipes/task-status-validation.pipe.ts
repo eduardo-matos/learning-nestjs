@@ -1,5 +1,5 @@
 import { ValidationPipe, BadRequestException } from "@nestjs/common";
-import { TaskStatus } from "../task.model";
+import { TaskStatus } from "../task-status.enum";
 
 export class TaskStatusValidationPipe extends ValidationPipe implements ValidationPipe {
     readonly allowedStatuses = Object.values(TaskStatus);
