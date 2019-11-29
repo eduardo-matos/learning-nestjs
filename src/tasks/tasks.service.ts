@@ -15,22 +15,23 @@ export class TasksService {
         private taskRepository: TaskRepository
     ) {}
 
-    getTasks(filter: GetTasksFilterDto, user: User): Promise<Task[]> {
+    async getTasks(filter: GetTasksFilterDto, user: User): Promise<Task[]> {
         const { status, search } = filter;
 
-        const where: { [key: string]: any }[] = [];
-
-        where.push({ user });
+        let query = this.taskRepository.createQueryBuilder().where('userid = :userid', { userid: user.id });
 
         if (status) {
-            where.push({ status });
+            query = query.andWhere('status = :status', { status });
         }
 
         if (search) {
-            where.push({ title: Like(`%${search}%`) }, { description: Like(`%${search}%`) });
+            query = query.andWhere(
+                '(title like :title OR description like :description)',
+                { title: `%${search}%`, description: `%${search}%` },
+            );
         }
 
-        return this.taskRepository.find({ where });
+        return query.getMany();
     }
 
     async getTaskById(id: number, user: User): Promise<Task> {
@@ -44,7 +45,7 @@ export class TasksService {
     }
 
     async deleteTaskById(id: number, user: User): Promise<boolean> {
-        const result = await this.taskRepository.delete({ id, user });
+        const result = await this.taskRepository.delete({ id, userid: user.id });
         return !!result.affected;
     }
 

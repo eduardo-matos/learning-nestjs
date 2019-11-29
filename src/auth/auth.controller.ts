@@ -22,10 +22,4 @@ export class AuthController {
 
         return { success: true, accessToken };
     }
-
-    @Post('test')
-    @UseGuards(AuthGuard())
-    test(@Req() req) {
-        console.log(req);
-    }
 }

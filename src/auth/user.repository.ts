@@ -17,7 +17,6 @@ export class UserRepository extends Repository<User> {
         try {
             return await this.save({ username, password: hashedPassword, salt });
         } catch (err) {
-            console.log(err)
             if (err.code === UNIQUE_CONSTRAINT_ERROR) {
                 throw new ConflictException();
             }
