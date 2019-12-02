@@ -12,7 +12,7 @@ import { User } from '../auth/user.entity';
 export class TasksService {
     constructor(
         @InjectRepository(TaskRepository)
-        private taskRepository: TaskRepository
+        private taskRepository: TaskRepository,
     ) {}
 
     async getTasks(filter: GetTasksFilterDto, user: User): Promise<Task[]> {
@@ -56,7 +56,7 @@ export class TasksService {
 
     async createTask(createTaskDto: CreateTaskDto, user: User): Promise<Task> {
         const { title, description } = createTaskDto;
-        
+
         const task = new Task();
         task.description = description;
         task.title = title;

@@ -7,18 +7,20 @@ import { AuthGuard } from '@nestjs/passport';
 @Controller('auth')
 export class AuthController {
     constructor(
-        private authService: AuthService
+        private authService: AuthService,
     ) {}
 
     @Post('signup')
     signUp(@Body(ValidationPipe) authCredentialsDto: AuthCredentialsDto): Promise<User> {
-        return this.authService.signUpUser(authCredentialsDto)
+        return this.authService.signUpUser(authCredentialsDto);
     }
 
     @Post('signin')
     async signIn(@Body(ValidationPipe) authCredentialsDto: AuthCredentialsDto): Promise<{ success: boolean, accessToken: string }> {
         const accessToken = await this.authService.signInUser(authCredentialsDto);
-        if (!accessToken) return { success: false, accessToken: '' };
+        if (!accessToken) {
+            return { success: false, accessToken: '' };
+        }
 
         return { success: true, accessToken };
     }

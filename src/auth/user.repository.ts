@@ -1,9 +1,9 @@
-import { Repository, EntityRepository } from "typeorm";
-import { User } from "./user.entity";
-import { AuthCredentialsDto } from "./dto/auth-credentials.dto";
-import { ConflictException, InternalServerErrorException, NotFoundException } from "@nestjs/common";
+import { Repository, EntityRepository } from 'typeorm';
+import { User } from './user.entity';
+import { AuthCredentialsDto } from './dto/auth-credentials.dto';
+import { ConflictException, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
-;
+
 const UNIQUE_CONSTRAINT_ERROR = '23505';
 
 @EntityRepository(User)

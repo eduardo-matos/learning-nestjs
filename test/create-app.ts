@@ -13,4 +13,4 @@ export default async (): Promise<[TestingModule, INestApplication]> => {
     await app.init();
 
     return [ module, app ];
-}
+};

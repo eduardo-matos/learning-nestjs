@@ -1,14 +1,22 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { SqliteConnectionOptions } from 'typeorm/driver/sqlite/SqliteConnectionOptions';
+import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
 
-export const typeOrmConfig: TypeOrmModuleOptions = {
+const dbConfig = process.env.NODE_ENV === 'test' ? {
     type: 'sqlite',
     database: ':memory:',
-    // type: 'postgres',
-    // host: 'localhost',
-    // port: 5432,
-    // username: 'postgres',
-    // password: '',
-    // database: 'taskmanagement',
+    synchronize: false,
+} as SqliteConnectionOptions : {
+    type: process.env.APP_DB_TYPE || 'postgres',
+    host: process.env.APP_DB_HOST || 'localhost',
+    port: parseInt(process.env.APP_DB_PORT, 10) || 5432,
+    username: process.env.APP_DB_USER || 'postgres',
+    password: process.env.APP_DB_PASS || '',
+    database: process.env.APP_DB_NAME || 'taskmanagement',
+    synchronize: false,
+} as PostgresConnectionOptions;
+
+export const typeOrmConfig: TypeOrmModuleOptions = {
     entities: [__dirname + '/../**/*.entity.{ts,js}'],
-    synchronize: true, // recommended to be false in production
+    ...dbConfig,
 };

@@ -32,7 +32,7 @@ describe('TasksService', () => {
         await conn.synchronize();
     });
 
-    afterAll(() => app.close())
+    afterAll(() => app.close());
 
     describe('GetTasks', () => {
         it('Returns tasks from specified user', async () => {
@@ -40,9 +40,9 @@ describe('TasksService', () => {
             const user2 = await authService.signUpUser({ username: 'Silva', password: 'spam123' });
             await tasksService.createTask({ title: 'Foo', description: 'Bar' }, user1);
             await tasksService.createTask({ title: 'Baz', description: 'Qux' }, user2);
-    
+
             const tasks = await tasksService.getTasks({}, user1);
-    
+
             expect(tasks).toEqual([{
                 id: expect.any(Number),
                 title: 'Foo',
@@ -56,16 +56,16 @@ describe('TasksService', () => {
             const user = await authService.signUpUser({ username: 'Matos', password: 'spam123' });
             await tasksService.createTask({ title: 'Foo', description: 'Bar' }, user);
             await tasksService.createTask({ title: 'Baz', description: 'Qux' }, user);
-    
+
             const tasks = await tasksService.getTasks({}, user);
-    
+
             expect(tasks).toEqual([{
                 id: expect.any(Number),
                 title: 'Foo',
                 description: 'Bar',
                 status: TaskStatus.OPEN,
                 userid: user.id,
-            },{
+            }, {
                 id: expect.any(Number),
                 title: 'Baz',
                 description: 'Qux',
@@ -138,7 +138,7 @@ describe('TasksService', () => {
                 description: 'Bar',
                 status: TaskStatus.OPEN,
                 userid: user.id,
-            },{
+            }, {
                 id: expect.any(Number),
                 title: 'Baz',
                 description: 'Lorem',
@@ -189,11 +189,11 @@ describe('TasksService', () => {
     });
 
     describe('DeleteTaskById', () => {
-        it("Deletes user's task", async () => {
+        it('Deletes user\'s task', async () => {
             const user = await authService.signUpUser({ username: 'Matos', password: 'spam123' });
             const task = await tasksService.createTask({ title: 'Baz', description: 'Lorem' }, user);
 
-            await tasksService.deleteTaskById(task.id, user)
+            await tasksService.deleteTaskById(task.id, user);
 
             expect(await taskRepository.find({ id: task.id })).toEqual([]);
         });
@@ -214,7 +214,7 @@ describe('TasksService', () => {
             const user = await authService.signUpUser({ username: 'Matos', password: 'spam123' });
             const task = await tasksService.createTask({ title: 'Baz', description: 'Lorem' }, user);
 
-            const returnedTask = await tasksService.modifyTask(task.id, TaskStatus.IN_PROGRESS, user)
+            const returnedTask = await tasksService.modifyTask(task.id, TaskStatus.IN_PROGRESS, user);
 
             expect(returnedTask.id).toEqual(task.id);
             expect(await taskRepository.findOne({ id: task.id })).toEqual(expect.objectContaining({
@@ -227,7 +227,7 @@ describe('TasksService', () => {
             const user2 = await authService.signUpUser({ username: 'Silva', password: 'spam123' });
             const task = await tasksService.createTask({ title: 'Baz', description: 'Lorem' }, user2);
 
-            const returnedTask = await tasksService.modifyTask(task.id, TaskStatus.IN_PROGRESS, user1)
+            const returnedTask = await tasksService.modifyTask(task.id, TaskStatus.IN_PROGRESS, user1);
 
             expect(returnedTask).toBeFalsy();
             expect((await taskRepository.findOne({ id: task.id })).status).not.toEqual(TaskStatus.IN_PROGRESS);
