@@ -8,5 +8,7 @@ It was developed following the course _NestJS Zero to Hero - Modern TypeScript B
 
 ## Useful commands
 
+1. Run: `npm run start:dev`
 1. Test: `npm test`
 1. Build: `npm run ruild`
+
